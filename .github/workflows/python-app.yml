@@ -1,0 +1,54 @@
+name: Python application
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code with LFS
+      uses: actions/checkout@v4
+      with:
+        lfs: true
+
+    - name: Git LFS Pull
+      run: |
+        git lfs install
+        git lfs pull
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Set environment variables
+      run: |
+        echo "JWT_SECRET=your-secret-token" >> $GITHUB_ENV
+        echo "JWT_ALGORITHM=HS256" >> $GITHUB_ENV
+
+    - name: List models directory (for debugging)
+      run: |
+        echo "Checking models folder:"
+        ls -lh models || true
+
+    - name: Run linting (flake8)
+      run: |
+        pip install flake8
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Run tests (pytest)
+      run: |
+        pytest -v
