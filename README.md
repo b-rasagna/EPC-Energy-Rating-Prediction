@@ -48,19 +48,74 @@ The system allows users to:
 
 ## End-to-End Pipeline
 
-### 1. Notebook Phase
+Certainly! Here's an improved, more detailed version of your **End-to-End Pipeline** section for the README, with clear explanation of each step and important details:
 
-* Perform EDA and feature engineering on EPC data
-* Train and evaluate multiple models
-* Save final models to `models/` directory
-* Generate `lookup_df` with key features
+---
 
-### 2. Application Phase
+## End-to-End Pipeline
 
-* FastAPI loads selected model on demand
-* Streamlit provides secure UI for search and prediction
-* Lookup works by `LMK_KEY` or `Property Address`
-* Prediction output includes both rating letter and numeric score
+The pipeline is organized into two key phases: **Notebook Phase** and **Application Phase**, providing a comprehensive workflow from data exploration to deployment-ready inference.
+
+---
+
+### 1. Notebook Phase - Data Exploration, Model Training & Feature Engineering
+
+This initial phase focuses on preparing and understanding the data, engineering meaningful features, and training predictive models:
+
+* **Exploratory Data Analysis (EDA):**
+
+  * Examine data distributions, missing values, and correlations within the EPC dataset.
+  * Visualize energy ratings, cost metrics, and property attributes to inform feature selection.
+
+* **Feature Engineering:**
+
+  * Combine raw address components into full addresses for easy lookup.
+  * Derive new features such as total energy cost, cost per area, and CO2 emissions per floor area.
+  * Encode categorical variables and map energy ratings from letters (A-G) to numeric scores (6-0).
+
+* **Model Training and Evaluation:**
+
+  * Train multiple machine learning models (Random Forest, XGBoost, Logistic Regression, MLP) on the cleaned and processed dataset.
+  * Evaluate models using metrics such as accuracy, macro F1 score, ROC-AUC, and log loss.
+  * Compare models trained on imbalanced data and balanced data using SMOTE or class weighting.
+  * Select the best-performing model(s) based on validation performance.
+
+* **Model and Artifact Saving:**
+
+  * Save trained models in `.pkl` format for ML models and `.h5` for any deep learning models.
+  * Save preprocessing objects like label encoders, vectorizers, and tokenizers if applicable.
+  * Generate a `lookup_df` CSV containing property keys (LMK\_KEY), full addresses, and selected features to enable efficient API-based querying.
+
+---
+
+### 2. Application Phase - Model Deployment & Real-Time Prediction
+
+This phase covers how the trained models and artifacts are integrated into an API and UI for real-time predictions:
+
+* **FastAPI Backend:**
+
+  * Dynamically load the requested model into memory based on client requests.
+  * Provide secure JWT-based authentication for all endpoints.
+  * Implement API endpoints for user login, model selection, and prediction requests.
+  * Support prediction requests by LMK\_KEY or property address, leveraging the precomputed `lookup_df` to fetch property features efficiently.
+  * Return both numeric energy rating scores and human-readable letter ratings for user-friendly display.
+
+* **Streamlit Frontend Dashboard:**
+
+  * Offer a secure web UI where users log in using JWT-authenticated credentials.
+  * Allow users to select a predictive model from the available list.
+  * Enable input of either LMK\_KEY or full property address for energy rating prediction.
+  * Display prediction results clearly, showing both the energy rating letter (A-G) and the underlying numeric score.
+  * Provide error handling and informative messages for invalid inputs or missing data.
+
+* **Lookup and Feature Retrieval:**
+
+  * Use the generated `lookup_df` as a quick-access feature store mapping LMK\_KEY and addresses to their feature vectors.
+  * Ensure the API performs fast, reliable lookups to support real-time predictions without retraining or reprocessing.
+
+---
+
+This modular and scalable pipeline ensures the system is **maintainable**, **extensible**, and **ready for production deployment**, enabling easy updates to models and datasets while delivering fast, accurate energy rating predictions to end-users.
 
 ---
 
