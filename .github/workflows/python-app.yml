@@ -24,6 +24,11 @@ jobs:
         git lfs install
         git lfs pull
 
+    - name: Extract model archive
+      run: |
+        mkdir -p models
+        tar -xzf models/rf_model.pkl.tar.gz -C models
+
     - name: Set up Python 3.11
       uses: actions/setup-python@v4
       with:
