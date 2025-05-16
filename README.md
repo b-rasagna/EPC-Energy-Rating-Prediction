@@ -48,12 +48,6 @@ The system allows users to:
 
 ## End-to-End Pipeline
 
-Certainly! Here's an improved, more detailed version of your **End-to-End Pipeline** section for the README, with clear explanation of each step and important details:
-
----
-
-## End-to-End Pipeline
-
 The pipeline is organized into two key phases: **Notebook Phase** and **Application Phase**, providing a comprehensive workflow from data exploration to deployment-ready inference.
 
 ---
