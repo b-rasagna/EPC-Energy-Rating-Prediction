@@ -30,7 +30,6 @@ The system allows users to:
 * Train and evaluate models using a Jupyter notebook
 * Save trained models and reuse them via FastAPI
 * Make authenticated predictions using LMK\_KEY or Property Address
-* Optionally allow manual feature entry for new properties
 
 ---
 
@@ -52,9 +51,9 @@ The system allows users to:
 ### 1. Notebook Phase
 
 * Perform EDA and feature engineering on EPC data
-* Generate `lookup_df` with key features
 * Train and evaluate multiple models
 * Save final models to `models/` directory
+* Generate `lookup_df` with key features
 
 ### 2. Application Phase
 
@@ -114,7 +113,7 @@ Visit `http://localhost:8501`
 
 * Enter LMK\_KEY or Property Address
 
-* View prediction result (e.g., **B (score: 6)**)
+* View prediction result (e.g., **B**)
 
 ---
 
@@ -178,8 +177,7 @@ Authorization: Bearer <JWT>
 {
   "lmk_key": "...",
   "property_address": "...",
-  "predicted_potential_energy_rating": 6,
-  "predicted_rating_letter": "B"
+  "predicted_potential_energy_rating": "B"
 }
 ```
 
@@ -190,20 +188,23 @@ Authorization: Bearer <JWT>
 ```
 EPC_Energy_Rating_Predictor/
 │
-├── app/                  # FastAPI source code
-│   ├── main.py           # API routes
-│   ├── auth.py           # JWT logic
-│   ├── model_selector.py # Load models
-│   ├── prediction.py     # Inference logic
+├── app/
+│   ├── main.py
+│   ├── auth.py
+│   ├── model_selector.py
+│   ├── prediction.py
 │
-├── models/               # Trained model files (.pkl)
-├── streamlit_app.py      # Streamlit UI
-├── run_app.sh            # Start script
-├── requirements.txt      # Python dependencies
-├── Dockerfile            # Container build config
-├── .env                  # JWT secret keys
-├── notebook.ipynb        # EDA + model training
-└── README.md             # This file
+├── models/
+├── notebooks/                         
+│   ├── Energy_Rating_Prediction.ipynb 
+│   ├── Generate_Lookup_DF.ipynb
+├── streamlit_app.py
+├── run_app.sh
+├── requirements.txt
+├── Dockerfile 
+├── .env 
+├── notebook.ipynb
+└── README.md
 ```
 
 ---
